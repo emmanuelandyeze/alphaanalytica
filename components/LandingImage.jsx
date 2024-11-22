@@ -4,8 +4,8 @@ import { GoArrowUpRight } from 'react-icons/go';
 
 const LandingImage = () => {
 	return (
-		<div className="bg-[#F0F7FD]">
-			<div className=" px-4">
+		<div className="bg-[#F0F7FD] md:bg-white">
+			<div className="px-4 md:px-0">
 				<div className="max-w-[85rem] mx-auto mt-10 relative h-[70vh] rounded-3xl overflow-hidden border-gray-300">
 					{/* Image */}
 					<Image
