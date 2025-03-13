@@ -12,7 +12,7 @@ export default function Navbar() {
 	const navItems = [
 		{ name: 'Home', href: '/' },
 		{ name: 'About Us', href: '/about' },
-		{ name: 'Services', href: '/services' },
+		// { name: 'Services', href: '/services' },
 		{ name: 'Contact', href: '/contact' },
 		{ name: 'Blog', href: '/blog' },
 	];
@@ -25,7 +25,11 @@ export default function Navbar() {
 					href="/"
 					// className="text-2xl text-[#A9C5D6] tracking-widest space-x-8 "
 				>
-					<img src="/images/aa logo.png" alt="" className='md:h-10 h-8' />
+					<img
+						src="/images/logo1.png"
+						alt=""
+						className="md:h-20 h-14"
+					/>
 				</Link>
 
 				{/* Menu Button (Mobile) */}
@@ -54,9 +58,9 @@ export default function Navbar() {
 									href={item.href}
 									className={`block px-4 py-2 rounded-md md:inline-block ${
 										pathname === item.href
-											? 'bg-white text-primary underline underline-offset-4'
+											? 'bg-white text-[#772D3C] font-bold underline underline-offset-4'
 											: ''
-									} hover:bg-white hover:text-primary hover:underline hover:underline-offset-4`}
+									} hover:bg-white hover:text-[#772D3C] hover:underline hover:underline-offset-4`}
 								>
 									{item.name}
 								</Link>

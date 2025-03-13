@@ -24,7 +24,7 @@ const Footer = () => {
 				<div className="text-center md:text-left">
 					<p className="text-sm mb-2">
 						<span className="font-semibold">Email:</span>{' '}
-						info@alphaanalytica.org
+						info@aals.com.ng
 					</p>
 					<p className="text-sm">
 						<span className="font-semibold">Phone:</span>{' '}
@@ -67,7 +67,7 @@ const Footer = () => {
 
 			{/* Bottom Section */}
 			<div className="mt-8 border-t border-gray-600 pt-4 text-center text-sm">
-				<p>© 2024 Alpha Analytica. All rights reserved.</p>
+				<p>© 2025 Alpha Analytica. All rights reserved.</p>
 			</div>
 		</footer>
 	);
