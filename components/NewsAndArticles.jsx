@@ -69,7 +69,7 @@ const NewsAndArticles = () => {
 				))}
 			</div>
 			<div className="flex flex-col justify-center items-center py-5">
-				<button className="bg-transparent text-[#121212] border border-[#121212] py-4 mt-0 px-6 rounded-lg hover:bg-primary hover:text-[#ffff] hover:border-primary transition">
+				<button className="bg-transparent text-[#121212] border border-[#121212] py-4 mt-0 px-6 rounded-lg hover:bg-[#195243] hover:text-[#ffff] hover:border-[#195243] transition">
 					Read more
 				</button>
 			</div>

@@ -66,7 +66,7 @@ const Services = () => {
 								</p>
 							</li>
 						</ul>
-						<button className="bg-transparent text-[#fff] border border-[#fff] py-4 mt-6 px-6 rounded-lg hover:bg-primary hover:text-[#ffff] hover:border-primary transition">
+						<button className="bg-transparent text-[#fff] border border-[#fff] py-4 mt-6 px-6 rounded-lg hover:bg-[#fff] hover:text-[#195243] hover:border-[#fff] transition">
 							Get in Touch
 						</button>
 					</div>

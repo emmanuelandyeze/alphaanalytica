@@ -146,7 +146,7 @@ export default function About() {
 						innovative analytical solutions that empower our
 						clients to make informed decisions.
 					</h1>
-					<button className="bg-transparent text-[#121212] border border-[#121212] py-4 mt-6 px-6 rounded-lg hover:bg-primary hover:text-[#ffff] hover:border-primary transition">
+					<button className="bg-transparent text-[#121212] border border-[#121212] py-4 mt-6 px-6 rounded-lg hover:bg-[#195243] hover:text-[#ffff] hover:border-[#195243] transition">
 						Get in Touch
 					</button>
 				</div>
