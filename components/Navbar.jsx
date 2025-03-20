@@ -12,8 +12,8 @@ export default function Navbar() {
 	const navItems = [
 		{ name: 'Home', href: '/' },
 		{ name: 'About Us', href: '/about' },
-		// { name: 'Services', href: '/services' },
-		{ name: 'Contact', href: '/contact' },
+		{ name: 'Our Services', href: '/services' },
+		{ name: 'Contact Us', href: '/contact' },
 		{ name: 'Blog', href: '/blog' },
 	];
 
@@ -47,15 +47,16 @@ export default function Navbar() {
 
 				{/* Navigation Links */}
 				<div
-					className={`absolute top-14 left-0 w-full bg-white shadow-md md:shadow-none md:static md:block md:w-auto transition-all ${
+					className={`absolute top-14 left-0 w-full z-50 bg-white shadow-md md:shadow-none md:static md:block md:w-auto transition-all ${
 						isOpen ? 'block' : 'hidden'
 					}`}
 				>
-					<ul className="flex flex-col md:flex-row md:space-x-3">
+					<ul className="flex flex-col pl-3 pt-3  pb-3 md:flex-row md:space-x-3">
 						{navItems.map((item) => (
 							<li key={item.name} className="py-2 md:py-0">
 								<Link
 									href={item.href}
+									onClick={() => setIsOpen(!isOpen)}
 									className={`block px-4 py-2 rounded-md md:inline-block ${
 										pathname === item.href
 											? 'bg-white text-[#772D3C] font-bold underline underline-offset-4'

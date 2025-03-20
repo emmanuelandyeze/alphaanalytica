@@ -4,7 +4,7 @@ import { CheckIcon } from '@heroicons/react/solid';
 const Services = () => {
 	return (
 		<section
-			className="relative bg-[#1E3A8A] text-white py-16 md:py-24"
+			className="relative bg-[#772D3C] text-white py-16 md:py-24"
 			style={{
 				backgroundImage: "url('/images/services.png')", // Replace with your image path
 				backgroundSize: 'cover',
@@ -12,7 +12,7 @@ const Services = () => {
 			}}
 		>
 			{/* Overlay for readability */}
-			<div className="absolute inset-0 bg-[#1E3A8A]/80"></div>
+			<div className="absolute inset-0 bg-[#195243]/80"></div>
 
 			{/* Content */}
 			<div className="relative max-w-[85rem] mx-auto px-6">

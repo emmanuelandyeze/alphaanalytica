@@ -4,9 +4,9 @@ import { GoArrowUpRight } from 'react-icons/go';
 
 const LandingImage = () => {
 	return (
-		<div className="bg-[#F0F7FD] md:bg-white">
-			<div className="px-4 md:px-0">
-				<div className="max-w-[85rem] mx-auto mt-10 relative h-[70vh] rounded-3xl overflow-hidden border-gray-300">
+		<div className="bg-[#beeee2] pt-0 rounded-t-3xl mt-10 md:bg-white">
+			<div className="px-0 md:px-0">
+				<div className="max-w-[85rem] mx-auto mt-10 relative h-[50vh] md:h-[70vh] md:rounded-3xl overflow-hidden border-gray-300">
 					{/* Image */}
 					<Image
 						src="/images/landing.jpg" // Replace with your image path
@@ -17,8 +17,8 @@ const LandingImage = () => {
 						className="filter brightness-100" // Darkens the image
 					/>
 				</div>
-				<div className="bg-[#F0F7FD] pb-20 -mt-56 md:-mt-52">
-					<div className="max-w-[85rem] mx-auto flex flex-col md:flex-row justify-center gap-5 items-center pt-72">
+				<div className="bg-[#beeee2] pb-20 -mt-56 md:-mt-52">
+					<div className="max-w-[85rem] px-5 mx-auto flex flex-col md:flex-row justify-center gap-5 items-center pt-72">
 						<div className="relative w-full md:w-[33%] bg-white shadow-sm pt-20 pb-12 px-8 rounded-lg">
 							<div className="absolute inset-0"></div>
 							<div className="relative z-10 text-[#121212]">
