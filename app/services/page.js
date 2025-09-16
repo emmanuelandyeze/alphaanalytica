@@ -27,105 +27,100 @@ const Page = () => {
 							</p>
 						</section>
 					</div>
-					<header
+				</div>
+				<header
+					style={{
+						textAlign: 'center',
+						marginBottom: '3rem',
+					}}
+				>
+					<h1 style={{ fontSize: '2.5rem', color: '#333' }}>
+						Our Services
+					</h1>
+					<p style={{ fontSize: '1.2rem', color: '#666' }}>
+						At Alpha Analytica, we provide innovative
+						chemical solutions combining advanced analytical
+						techniques with scientific expertise.
+					</p>
+				</header>
+
+				<section style={{ marginBottom: '3rem' }}>
+					<h2
 						style={{
-							textAlign: 'center',
-							marginBottom: '3rem',
+							fontSize: '2rem',
+							color: '#0070f3',
+							marginBottom: '1rem',
 						}}
 					>
-						<h1
-							style={{ fontSize: '2.5rem', color: '#333' }}
-						>
-							Our Services
-						</h1>
-						<p
-							style={{ fontSize: '1.2rem', color: '#666' }}
-						>
-							At Alpha Analytica, we provide innovative
-							chemical solutions combining advanced
-							analytical techniques with scientific
-							expertise.
-						</p>
-					</header>
+						Analytical Testing Services
+					</h2>
+					<p
+						style={{
+							fontSize: '1rem',
+							lineHeight: '1.6',
+							color: '#444',
+						}}
+					>
+						Our analytical testing services utilize advanced
+						instrumentation and a team of experienced
+						scientists to deliver precise and reliable
+						results. We empower industries and researchers
+						with comprehensive insights for informed
+						decision-making.
+					</p>
+				</section>
 
-					<section style={{ marginBottom: '3rem' }}>
-						<h2
-							style={{
-								fontSize: '2rem',
-								color: '#0070f3',
-								marginBottom: '1rem',
-							}}
-						>
-							Analytical Testing Services
-						</h2>
-						<p
-							style={{
-								fontSize: '1rem',
-								lineHeight: '1.6',
-								color: '#444',
-							}}
-						>
-							Our analytical testing services utilize
-							advanced instrumentation and a team of
-							experienced scientists to deliver precise and
-							reliable results. We empower industries and
-							researchers with comprehensive insights for
-							informed decision-making.
-						</p>
-					</section>
+				<section style={{ marginBottom: '3rem' }}>
+					<h2
+						style={{
+							fontSize: '2rem',
+							color: '#0070f3',
+							marginBottom: '1rem',
+						}}
+					>
+						Laboratory Equipment Sales and Rentals
+					</h2>
+					<p
+						style={{
+							fontSize: '1rem',
+							lineHeight: '1.6',
+							color: '#444',
+						}}
+					>
+						We offer an extensive selection of laboratory
+						equipment, including medical and chemical
+						instrumentation. Whether you need to purchase or
+						rent, our solutions are tailored to meet your
+						specific requirements for efficiency and
+						sustainability.
+					</p>
+				</section>
 
-					<section style={{ marginBottom: '3rem' }}>
-						<h2
-							style={{
-								fontSize: '2rem',
-								color: '#0070f3',
-								marginBottom: '1rem',
-							}}
-						>
-							Laboratory Equipment Sales and Rentals
-						</h2>
-						<p
-							style={{
-								fontSize: '1rem',
-								lineHeight: '1.6',
-								color: '#444',
-							}}
-						>
-							We offer an extensive selection of laboratory
-							equipment, including medical and chemical
-							instrumentation. Whether you need to purchase
-							or rent, our solutions are tailored to meet
-							your specific requirements for efficiency and
-							sustainability.
-						</p>
-					</section>
-
-					<section style={{ marginBottom: '3rem' }}>
-						<h2
-							style={{
-								fontSize: '2rem',
-								color: '#0070f3',
-								marginBottom: '1rem',
-							}}
-						>
-							Professional and Consultancy Services
-						</h2>
-						<p
-							style={{
-								fontSize: '1rem',
-								lineHeight: '1.6',
-								color: '#444',
-							}}
-						>
-							Beyond traditional services, we provide
-							professional consultancy with innovative
-							methodologies and customized solutions. Our
-							experts offer consultation, industry-specific
-							strategies, and advanced instrumentation
-							guidance to drive your success.
-						</p>
-					</section>
-				</div>
+				<section style={{ marginBottom: '3rem' }}>
+					<h2
+						style={{
+							fontSize: '2rem',
+							color: '#0070f3',
+							marginBottom: '1rem',
+						}}
+					>
+						Professional and Consultancy Services
+					</h2>
+					<p
+						style={{
+							fontSize: '1rem',
+							lineHeight: '1.6',
+							color: '#444',
+						}}
+					>
+						Beyond traditional services, we provide
+						professional consultancy with innovative
+						methodologies and customized solutions. Our
+						experts offer consultation, industry-specific
+						strategies, and advanced instrumentation
+						guidance to drive your success.
+					</p>
+				</section>
 			</section>
 		</div>
 	);
