@@ -266,9 +266,9 @@ export default function Contact() {
 									Address
 								</h3>
 								<p className="text-gray-600">
-									123 Science Park Drive, <br />
-									Innovation City, CA 90210, <br />
-									USA
+									54 Sam Shonibare street, <br />
+									Surulere, Lagos. <br />
+									Nigeria
 								</p>
 							</div>
 						</div>
