@@ -1,8 +1,8 @@
 import localFont from 'next/font/local';
 import './globals.css';
 import { Sora } from 'next/font/google';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 
 const geistSans = localFont({
 	src: './fonts/GeistVF.woff',

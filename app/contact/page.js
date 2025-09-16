@@ -1,6 +1,94 @@
-import Image from 'next/image';
+'use client';
+import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 
 export default function Contact() {
+	// State to hold form input values
+	const [formData, setFormData] = useState({
+		name: '',
+		email: '',
+		subject: '',
+		message: '',
+	});
+	// State to manage the submission loading state
+	const [isSubmitting, setIsSubmitting] = useState(false);
+	// State to track the status of the submission (idle, success, error)
+	const [submitStatus, setSubmitStatus] = useState('idle');
+
+	// State to store and display any error messages
+	const [errorMessage, setErrorMessage] = useState('');
+
+	// Handles changes to input fields and updates the formData state
+	const handleChange = (e) => {
+		setFormData({
+			...formData,
+			[e.target.name]: e.target.value,
+		});
+	};
+	// Handles the form submission
+	const handleSubmit = async (e) => {
+		e.preventDefault(); // Prevent the default browser form submission
+		setIsSubmitting(true); // Set submitting state to true to disable button and show loading text
+		setSubmitStatus('idle'); // Reset submission status
+		setErrorMessage(''); // Clear any previous error messages
+
+		// Basic client-side validation: check if all fields are filled
+		if (
+			!formData.name ||
+			!formData.email ||
+			!formData.subject ||
+			!formData.message
+		) {
+			setSubmitStatus('error');
+			setErrorMessage('Please fill in all fields.');
+			setIsSubmitting(false); // Re-enable the button
+			return; // Stop the submission process
+		}
+
+		try {
+			// Make a POST request to your Next.js API route
+			// This endpoint (which we'll create next) will handle sending the email
+			const response = await fetch('/api/contact', {
+				method: 'POST', // Use POST method to send data
+				headers: {
+					'Content-Type': 'application/json', // Specify content type as JSON
+				},
+				body: JSON.stringify(formData), // Convert form data to JSON string for the request body
+			});
+
+			// Check if the server response was not OK (e.g., status 4xx or 5xx)
+			if (!response.ok) {
+				// Attempt to parse a specific error message from the server response
+				const errorData = await response.json();
+				throw new Error(
+					errorData.message || 'Failed to send message.',
+				);
+			}
+
+			// If the response is OK, parse the success message
+			const result = await response.json();
+			console.log(result); // Log the success message from your API route
+
+			setSubmitStatus('success'); // Update submission status to success
+			// Clear the form fields after a successful submission
+			setFormData({
+				name: '',
+				email: '',
+				subject: '',
+				message: '',
+			});
+		} catch (error) {
+			setSubmitStatus('error'); // Update submission status to error
+			// Set the error message to display to the user
+			setErrorMessage(
+				error.message ||
+					'Something went wrong. Please try again.',
+			);
+		} finally {
+			setIsSubmitting(false); // Always reset submitting state once the fetch request is complete
+		}
+	};
+
 	return (
 		<div className="">
 			{/* Hero Section */}
@@ -39,7 +127,10 @@ export default function Contact() {
 						<h2 className="text-3xl mb-6">
 							Send Us a Message
 						</h2>
-						<form className="space-y-6">
+						<form
+							onSubmit={handleSubmit}
+							className="space-y-6"
+						>
 							<div>
 								<label
 									htmlFor="name"
@@ -51,6 +142,8 @@ export default function Contact() {
 									type="text"
 									id="name"
 									name="name"
+									value={formData.name}
+									onChange={handleChange}
 									required
 									className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
 								/>
@@ -66,6 +159,8 @@ export default function Contact() {
 									type="email"
 									id="email"
 									name="email"
+									value={formData.email}
+									onChange={handleChange}
 									required
 									className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
 								/>
@@ -81,6 +176,8 @@ export default function Contact() {
 									type="text"
 									id="subject"
 									name="subject"
+									value={formData.subject}
+									onChange={handleChange}
 									required
 									className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
 								/>
@@ -96,17 +193,48 @@ export default function Contact() {
 									id="message"
 									name="message"
 									rows="4"
+									value={formData.message}
+									onChange={handleChange}
 									required
 									className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
 								></textarea>
 							</div>
+							{submitStatus === 'success' && (
+								<motion.p
+									initial={{ opacity: 0, y: -10 }}
+									animate={{ opacity: 1, y: 0 }}
+									className="text-green-600 font-semibold text-center mt-4"
+								>
+									Message sent successfully! We'll get back
+									to you soon.
+								</motion.p>
+							)}
+							{submitStatus === 'error' && (
+								<motion.p
+									initial={{ opacity: 0, y: -10 }}
+									animate={{ opacity: 1, y: 0 }}
+									className="text-red-600 font-semibold text-center mt-4"
+								>
+									{errorMessage ||
+										'Failed to send message. Please try again later.'}
+								</motion.p>
+							)}
 							<div>
-								<button
+								<motion.button
 									type="submit"
 									className="w-full bg-[#195243] text-white px-6 py-3 rounded-md hover:bg-[#195243] focus:outline-none focus:ring-2 focus:ring-[#195243]"
+									whileHover={{
+										scale: isSubmitting ? 1 : 1.02,
+									}}
+									whileTap={{
+										scale: isSubmitting ? 1 : 0.98,
+									}}
+									disabled={isSubmitting}
 								>
-									Send Message
-								</button>
+									{isSubmitting
+										? 'Sending...'
+										: 'Send Message'}
+								</motion.button>
 							</div>
 						</form>
 					</div>
@@ -122,7 +250,7 @@ export default function Contact() {
 									Phone
 								</h3>
 								<p className="text-gray-600">
-									+1 (123) 456-7890
+									+234 812 372 8854
 								</p>
 							</div>
 							<div>
@@ -130,7 +258,7 @@ export default function Contact() {
 									Email
 								</h3>
 								<p className="text-gray-600">
-									info@alphaanalytica.com
+									info@aals.com.ng
 								</p>
 							</div>
 							<div>
