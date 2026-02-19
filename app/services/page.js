@@ -190,7 +190,7 @@ const testimonials = [
 ];
 
 const stats = [
-	{ id: 1, value: '+10k', label: 'Samples Processed' },
+	{ id: 1, value: '+1k', label: 'Samples Processed' },
 	{ id: 2, value: '+150', label: 'Validated Methods' },
 	{ id: 3, value: '+50', label: 'Partner Institutions' },
 ];
@@ -296,16 +296,15 @@ export default function Page() {
 										onClick={() =>
 											setActiveCategory(service.id)
 										}
-										className={`w-full text-left px-5 py-3 rounded-xl transition-all duration-200 flex items-center gap-3 font-medium ${
-											activeCategory === service.id
+										className={`w-full text-left px-5 py-3 rounded-xl transition-all duration-200 flex items-center gap-3 font-medium ${activeCategory === service.id
 												? 'bg-[#772D3C] text-white shadow-md'
 												: 'hover:bg-gray-100 text-gray-600'
-										}`}
+											}`}
 									>
 										<span
 											className={
 												activeCategory ===
-												service.id
+													service.id
 													? 'text-white'
 													: 'text-[#772D3C]'
 											}
