@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { motion } from 'framer-motion';
+import { Star, ShieldCheck, Clock } from 'lucide-react';
 
 export default function Landing() {
 	const container = {
@@ -32,49 +33,80 @@ export default function Landing() {
 	return (
 		<section className="max-w-[85rem] px-4 md:px-0 mx-auto">
 			<motion.div
-				className="grid md:grid-cols-1 gap-8 items-center mt-10"
+				className="grid md:grid-cols-1 gap-8 items-center mt-12 md:mt-20"
 				variants={container}
 				initial="hidden"
 				whileInView="visible"
 				viewport={{ once: true, amount: 0.25 }}
 			>
 				<div>
+					<motion.div
+						variants={item}
+						className="inline-flex items-center gap-2 bg-[#f4fbf9] border border-[#d6f0e9] rounded-full px-4 py-1.5 mb-6 text-sm font-medium text-[#195243]"
+					>
+						<span className="relative flex h-2 w-2">
+							<span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#29bd94] opacity-75"></span>
+							<span className="relative inline-flex rounded-full h-2 w-2 bg-[#195243]"></span>
+						</span>
+						ISO 17025 Compliant Laboratory
+					</motion.div>
+
 					<motion.h1
 						variants={item}
-						whileHover={{ scale: 1.02 }}
-						className="md:text-[2.9rem] text-[2.1rem] w-full md:w-[70%] font-[600] md:font-[400] leading-[2.8rem] md:leading-[3.6rem] text-[#0E202A]"
+						className="md:text-[3.5rem] text-[2.5rem] w-full md:w-[80%] font-bold leading-[1.1] text-[#0E202A] -tracking-[0.03em]"
 					>
-						Innovative Chemical Solutions for a Smarter,
-						<br />
-						Sustainable Future.
+						Innovative Chemical Solutions for a{' '}
+						<span className="text-[#dbb14c]">
+							Smarter, Sustainable Future.
+						</span>
 					</motion.h1>
 
 					<motion.p
 						variants={item}
-						className="text-[#949494] md:w-[50%] w-full mt-5 text-2xl leading-[2rem] md:leading-[2.3rem] font-light"
+						className="text-gray-500 md:w-[60%] w-full mt-6 text-xl leading-relaxed font-normal"
 					>
-						At Alpha Analytica, we combine advanced
-						analytical techniques with scientific expertise
-						to deliver precise insights.
+						At Alpha Analytica, we combine advanced analytical
+						techniques with scientific expertise to deliver precise
+						insights for industries, researchers, and
+						manufacturers.
 					</motion.p>
 
 					<motion.div
 						variants={item}
-						className="mt-6 flex gap-3"
-						initial={{ opacity: 0 }}
-						animate={{ opacity: 1 }}
-						transition={{ delay: 0.6 }}
+						className="mt-8 flex flex-wrap gap-4"
 					>
-						<button className="px-5 py-3 rounded-2xl bg-[#772D3C] text-white font-medium shadow-sm hover:scale-[1.01] transition-transform">
-							Learn more
-						</button>
-						<button className="px-5 py-3 rounded-2xl border border-[#E6E6E6] text-[#0E202A] font-medium hover:bg-[#F7F7F7] transition-colors">
-							Contact us
-						</button>
+						<a
+							href="/contact"
+							className="px-8 py-4 rounded-full bg-[#772D3C] text-white font-semibold shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all"
+						>
+							Request Analysis
+						</a>
+						<a
+							href="/services"
+							className="px-8 py-4 rounded-full bg-white border border-gray-200 text-[#0E202A] font-semibold hover:bg-gray-50 transition-colors"
+						>
+							Explore Services
+						</a>
+					</motion.div>
+
+					<motion.div
+						variants={item}
+						className="mt-12 pt-8 border-t border-gray-100 flex flex-wrap gap-x-8 gap-y-4 text-sm font-medium text-gray-500"
+					>
+						<div className="flex items-center gap-2">
+							<ShieldCheck className="w-5 h-5 text-[#29bd94]" />
+							Accredited Results
+						</div>
+						<div className="flex items-center gap-2">
+							<Clock className="w-5 h-5 text-[#29bd94]" />
+							Fast Turnaround
+						</div>
+						<div className="flex items-center gap-2">
+							<Star className="w-5 h-5 text-[#29bd94]" />
+							Expert Consultation
+						</div>
 					</motion.div>
 				</div>
-
-				
 			</motion.div>
 		</section>
 	);

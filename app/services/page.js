@@ -1,8 +1,8 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
 	ArrowRight,
 	CheckCircle,
@@ -10,51 +10,165 @@ import {
 	Box,
 	Clipboard,
 	ArrowDown,
+	FlaskConical,
+	Leaf,
+	Factory,
+	Microscope,
 } from 'lucide-react';
 import { FaChevronDown } from 'react-icons/fa6';
 
-// Services page for Alpha Analytica — enhanced with images, animations, gallery, testimonials and FAQ
-// Tailwind CSS assumed. Uses next/image for optimized images. Replace image paths in /public/images as needed.
-
-const services = [
+// Detailed Services Data
+const servicesData = [
 	{
-		id: 1,
-		title: 'Analytical Testing Services',
+		id: 'env',
+		category: 'Environmental Testing',
+		icon: <Leaf className="w-6 h-6" />,
+		tagline: 'Protecting our world with precision data.',
 		description:
-			'State-of-the-art instrumentation (HPLC, GC-MS, AAS) and validated methods for pharma, environment and materials.',
-		bullets: [
-			'Method validation & transfer',
-			'Batch release & stability testing',
-			'Trace-level environmental monitoring',
+			'Comprehensive environmental analysis for water, soil, and air quality, ensuring compliance with local and international standards.',
+		image: '/images/contact.jpg', // Placeholder, using existing asset
+		subServices: [
+			{
+				title: 'Water Analysis',
+				items: [
+					'Potable water quality (WHO/EPA standards)',
+					'Wastewater & effluent compliance monitoring',
+					'Groundwater & surface water testing',
+					'Heavy metals & trace element detection',
+				],
+			},
+			{
+				title: 'Soil & Sediment',
+				items: [
+					'Contaminated land assessment (Hydrocarbons, VOCs, SVOCs)',
+					'Agricultural soil nutrient profiling (NPK, pH)',
+					'Leachate analysis',
+				],
+			},
+			{
+				title: 'Air Quality & Waste',
+				items: [
+					'Indoor Air Quality (IAQ) monitoring',
+					'Stack emissions testing',
+					'Hazardous waste classification (TCLP)',
+				],
+			},
 		],
-		image: '/images/contact.jpg',
-		icon: <Clipboard className="w-6 h-6" />,
 	},
 	{
-		id: 2,
-		title: 'Equipment Sales & Rentals',
+		id: 'pharma',
+		category: 'Pharmaceutical & Life Sciences',
+		icon: <FlaskConical className="w-6 h-6" />,
+		tagline: 'Ensuring safety and efficacy from R&D to release.',
 		description:
-			'High-quality spectrophotometers, centrifuges, autoclaves — with maintenance, calibration, and flexible rental plans.',
-		bullets: [
-			'Installation & training',
-			'Calibration programs',
-			'Sustainable equipment options',
+			'Rigorous testing for raw materials and finished products, supporting R&D and QA with validated methods.',
+		image: '/images/services2.jpg', // Placeholder
+		subServices: [
+			{
+				title: 'Core Testing',
+				items: [
+					'Raw Material Testing (USP/BP/EP monographs)',
+					'Finished Product Testing (Potency, Purity, Uniformity)',
+					'Stability Studies (Accelerated & Long-term)',
+				],
+			},
+			{
+				title: 'Microbiology',
+				items: [
+					'Sterility testing',
+					'Endotoxin (LAL) testing',
+					'Microbial Limit Tests (MLT)',
+				],
+			},
+			{
+				title: 'Specialized Support',
+				items: ['Method Development & Validation', 'Custom R&D protocols'],
+			},
 		],
-		image: '/images/equipment.jpeg',
+	},
+	{
+		id: 'food',
+		category: 'Food & Agriculture',
+		icon: <Microscope className="w-6 h-6" />,
+		tagline: 'Farm-to-fork safety and quality assurance.',
+		description:
+			'Advanced analysis for nutritional content, contaminants, and pathogens to safeguard the food supply chain.',
+		image: '/images/equipment.jpeg', // Placeholder
+		subServices: [
+			{
+				title: 'Safety & Quality',
+				items: [
+					'Nutritional Labeling (Proximate analysis)',
+					'Pesticide residues (GC-MS/LC-MS)',
+					'Mycotoxins (Aflatoxins, Ochratoxins)',
+				],
+			},
+			{
+				title: 'Contaminants',
+				items: [
+					'Heavy metals (Lead, Mercury, Arsenic)',
+					'Microbiology (Salmonella, E. coli, Listeria)',
+				],
+			},
+		],
+	},
+	{
+		id: 'industrial',
+		category: 'Industrial & Materials',
+		icon: <Factory className="w-6 h-6" />,
+		tagline: 'Solving complex material challenges.',
+		description:
+			'Material characterization and chemical analysis for fuels, polymers, and industrial formulations.',
+		image: '/images/consult.jpeg', // Placeholder
+		subServices: [
+			{
+				title: 'Material Analysis',
+				items: [
+					'Chemical Composition & ID',
+					'Polymer Testing & Degradation',
+					'Fuel & Oil Analysis (Diesel, Lubricants)',
+				],
+			},
+		],
+	},
+	{
+		id: 'equipment',
+		category: 'Lab Equipment Solutions',
 		icon: <Box className="w-6 h-6" />,
+		tagline: 'Premium tools for premium results.',
+		description:
+			'End-to-end equipment services including sales, rentals, calibration, and maintenance for top-tier lab instruments.',
+		image: '/images/equipment.jpeg',
+		subServices: [
+			{
+				title: 'offerings',
+				items: [
+					'Sales: Spectrophotometers, HPLCs, Balances',
+					'Rental Services: Short-term & Long-term',
+					'Calibration (ISO 17025 compliant)',
+					'Preventative maintenance & IQ/OQ',
+				],
+			},
+		],
 	},
 	{
-		id: 3,
-		title: 'Consultancy & Training',
-		description:
-			'Regulatory guidance, process optimisation, staff training and project management for R&D and QC labs.',
-		bullets: [
-			'Regulatory submissions',
-			'Custom workshops',
-			'Project scoping & management',
-		],
-		image: '/images/consult.jpeg',
+		id: 'consulting',
+		category: 'Consultancy & Training',
 		icon: <Users className="w-6 h-6" />,
+		tagline: 'Empowering your team and optimizing your lab.',
+		description:
+			'Expert guidance on lab setup, regulatory compliance, and hands-on technical training.',
+		image: '/images/consult.jpeg',
+		subServices: [
+			{
+				title: 'Services',
+				items: [
+					'Lab Setup & Design (Turnkey solutions)',
+					'Regulatory Consulting (NAFDAC, SON, ISO 17025)',
+					'Technical Training (HPLC, GC, GLP Workshops)',
+				],
+			},
+		],
 	},
 ];
 
@@ -96,305 +210,276 @@ const faq = [
 	},
 ];
 
-const cardVariants = {
-	hidden: { opacity: 0, y: 18 },
-	visible: { opacity: 1, y: 0 },
+const fadeInUp = {
+	hidden: { opacity: 0, y: 20 },
+	visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
 };
 
 export default function Page() {
+	const [activeCategory, setActiveCategory] = useState(servicesData[0].id);
+
 	return (
-		<div className="text-gray-800">
+		<div className="text-gray-800 font-sans">
 			{/* HERO */}
 			<motion.section
 				initial={{ opacity: 0 }}
 				animate={{ opacity: 1 }}
 				transition={{ duration: 0.8 }}
-				className="relative bg-[#772D3C] text-white pt-20 pb-28 md:pb-36"
+				className="relative bg-[#772D3C] text-white pt-32 pb-24 md:pt-40 md:pb-32"
 				style={{
 					backgroundImage: "url('/images/services2.jpg')",
 					backgroundSize: 'cover',
 					backgroundPosition: 'center',
 				}}
 			>
-				<div className="absolute inset-0 bg-black/40"></div>
-				<div className="relative max-w-[85rem] mx-auto px-6">
-					<div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-						<motion.div
-							initial={{ x: -20, opacity: 0 }}
-							animate={{ x: 0, opacity: 1 }}
-							transition={{ duration: 0.8 }}
-							className="space-y-6"
-						>
-							<h1 className="text-4xl md:text-6xl font-extrabold leading-tight">
-								Our Services
-							</h1>
-							<p className="max-w-2xl text-lg text-gray-100/90">
-								Your trusted partner in analytical chemistry
-								solutions — precision, innovation and
-								regulatory insight to drive your research
-								and business forward.
-							</p>
-							<div className="flex gap-4">
-								<a
-									href="#contact"
-									className="inline-flex items-center gap-3 bg-[#FFD166] text-[#0f1724] px-6 py-3 rounded-2xl font-semibold shadow-md hover:scale-[1.01] transition-transform"
-								>
-									Get a Quote{' '}
-									<ArrowRight className="w-4 h-4" />
-								</a>
-								<a
-									href="#services"
-									className="inline-flex items-center gap-3 border border-white/30 px-5 py-3 rounded-2xl"
-								>
-									Explore Services
-								</a>
-							</div>
-						</motion.div>
-
-						{/* <motion.div
-							initial={{ scale: 0.98, opacity: 0 }}
-							animate={{ scale: 1, opacity: 1 }}
-							transition={{ duration: 0.9 }}
-							className="relative h-64 md:h-80 rounded-2xl overflow-hidden shadow-2xl"
-						>
-							<Image
-								src="/images/lab-hero.jpg"
-								alt="lab equipment"
-								fill
-								sizes="(max-width: 768px) 100vw, 50vw"
-								className="object-cover"
-							/>
-						</motion.div> */}
-					</div>
+				<div className="absolute inset-0 bg-black/60 mix-blend-multiply"></div>
+				<div className="relative max-w-[85rem] mx-auto px-6 text-center">
+					<motion.div
+						initial={{ y: 20, opacity: 0 }}
+						animate={{ y: 0, opacity: 1 }}
+						transition={{ duration: 0.8 }}
+						className="max-w-3xl mx-auto space-y-6"
+					>
+						<h1 className="text-4xl md:text-6xl font-extrabold leading-tight tracking-tight">
+							World-Class Analytical Services
+						</h1>
+						<p className="text-lg md:text-xl text-gray-200 leading-relaxed">
+							From environmental compliance to pharmaceutical
+							R&D — precision, innovation, and regulatory
+							insight to drive your business forward.
+						</p>
+					</motion.div>
 				</div>
 			</motion.section>
 
-			{/* Overview + Stats */}
-			<section className="py-12 md:py-20 bg-white">
+			{/* Overview stats */}
+			<section className="py-12 bg-white border-b border-gray-100">
 				<div className="max-w-[85rem] mx-auto px-6">
-					<div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
-						<div>
-							<h2 className="text-3xl font-bold mb-4">
-								Comprehensive Solutions
-							</h2>
-							<p className="text-gray-600 mb-6 max-w-xl">
-								Alpha Analytica blends technical excellence
-								with practical lab workflows so you can
-								trust results, reduce risk, and accelerate
-								product timelines.
-							</p>
-							<ul className="space-y-3">
-								<li className="flex items-start gap-3 text-gray-700">
-									<CheckCircle className="w-5 h-5 text-[#0070f3] mt-1" />
-									Turnkey testing & reporting
-								</li>
-								<li className="flex items-start gap-3 text-gray-700">
-									<CheckCircle className="w-5 h-5 text-[#0070f3] mt-1" />
-									Equipment lifecycle support
-								</li>
-								<li className="flex items-start gap-3 text-gray-700">
-									<CheckCircle className="w-5 h-5 text-[#0070f3] mt-1" />
-									Tailored consultancy & training
-								</li>
-							</ul>
-						</div>
-
-						<div className="md:col-span-2 grid grid-cols-1 sm:grid-cols-3 gap-4">
-							{stats.map((s) => (
-								<motion.div
-									key={s.id}
-									initial={{ opacity: 0, y: 12 }}
-									whileInView={{ opacity: 1, y: 0 }}
-									viewport={{ once: true }}
-									transition={{ duration: 0.6 }}
-									className="bg-gray-50 p-6 rounded-2xl text-center shadow-sm"
-								>
-									<div className="text-3xl font-bold">
-										{s.value}
-									</div>
-									<div className="text-sm text-gray-500">
-										{s.label}
-									</div>
-								</motion.div>
-							))}
-						</div>
+					<div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center divide-y md:divide-y-0 md:divide-x divide-gray-200">
+						{stats.map((s) => (
+							<div key={s.id} className="pt-4 md:pt-0 px-4">
+								<div className="text-4xl font-bold text-[#772D3C]">
+									{s.value}
+								</div>
+								<div className="text-sm font-medium text-gray-500 uppercase tracking-wide mt-2">
+									{s.label}
+								</div>
+							</div>
+						))}
 					</div>
 				</div>
 			</section>
 
-			{/* Services Grid */}
+			{/* Detailed Services Section */}
 			<section
 				id="services"
-				className="py-12 md:py-20 bg-gray-50"
+				className="py-16 md:py-24 bg-gray-50 scroll-mt-20"
 			>
 				<div className="max-w-[85rem] mx-auto px-6">
-					<div className="text-center mb-10">
-						<h3 className="text-2xl font-bold">
-							Our Core Services
-						</h3>
-						<p className="text-gray-600 max-w-2xl mx-auto mt-2">
-							From routine QC to complex method development
-							— we cover the analytical lifecycle.
+					<div className="text-center mb-12">
+						<h2 className="text-3xl md:text-4xl font-bold text-gray-900">
+							Explore Our Capabilities
+						</h2>
+						<p className="text-gray-600 mt-4 max-w-2xl mx-auto">
+							Select an industry or service area to see our
+							detailed offerings.
 						</p>
 					</div>
 
-					<div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-						{services.map((svc, i) => (
-							<motion.article
-								key={svc.id}
-								initial="hidden"
-								whileInView="visible"
-								viewport={{ once: true }}
-								variants={cardVariants}
-								transition={{
-									duration: 0.6,
-									delay: i * 0.12,
-								}}
-								className="bg-white rounded-2xl shadow-md overflow-hidden"
-							>
-								<div className="relative h-44 w-full">
-									<Image
-										src={svc.image}
-										alt={svc.title}
-										fill
-										sizes="(max-width: 768px) 100vw, 33vw"
-										className="object-cover"
-									/>
-								</div>
-								<div className="p-6">
-									<div className="flex items-center justify-between mb-3">
-										<h4 className="text-xl font-semibold">
-											{svc.title}
-										</h4>
-										<div className="text-[#0070f3]">
-											{svc.icon}
-										</div>
-									</div>
-									<p className="text-gray-600 mb-4">
-										{svc.description}
-									</p>
+					<div className="flex flex-col lg:flex-row gap-8">
+						{/* Category Navigation (Sidebar/Top bar on mobile) */}
+						<div className="lg:w-1/4 flex-shrink-0">
+							<div className="bg-white rounded-2xl shadow-sm p-2 sticky top-24 space-y-1">
+								{servicesData.map((service) => (
+									<button
+										key={service.id}
+										onClick={() =>
+											setActiveCategory(service.id)
+										}
+										className={`w-full text-left px-5 py-3 rounded-xl transition-all duration-200 flex items-center gap-3 font-medium ${
+											activeCategory === service.id
+												? 'bg-[#772D3C] text-white shadow-md'
+												: 'hover:bg-gray-100 text-gray-600'
+										}`}
+									>
+										<span
+											className={
+												activeCategory ===
+												service.id
+													? 'text-white'
+													: 'text-[#772D3C]'
+											}
+										>
+											{service.icon}
+										</span>
+										{service.category}
+									</button>
+								))}
+							</div>
+						</div>
 
-									<ul className="text-sm text-gray-700 space-y-2 mb-4">
-										{svc.bullets.map((b, idx) => (
-											<li
-												key={idx}
-												className="flex items-start gap-2"
+						{/* Content Area */}
+						<div className="lg:w-3/4 min-h-[600px]">
+							<AnimatePresence mode="wait">
+								{servicesData.map(
+									(service) =>
+										service.id === activeCategory && (
+											<motion.div
+												key={service.id}
+												initial={{
+													opacity: 0,
+													x: 10,
+												}}
+												animate={{
+													opacity: 1,
+													x: 0,
+												}}
+												exit={{
+													opacity: 0,
+													x: -10,
+												}}
+												transition={{
+													duration: 0.3,
+												}}
+												className="bg-white rounded-3xl p-8 md:p-10 shadow-lg border border-gray-100"
 											>
-												<span className="mt-1 text-[#10b981]">
-													•
-												</span>
-												<span>{b}</span>
-											</li>
-										))}
-									</ul>
+												<div className="flex flex-col md:flex-row gap-8 items-start mb-10">
+													<div className="flex-1">
+														<div className="flex items-center gap-3 text-[#772D3C] mb-4">
+															{service.icon}
+															<span className="font-bold text-sm tracking-wider uppercase">
+																{
+																	service.category
+																}
+															</span>
+														</div>
+														<h3 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+															{
+																service.tagline
+															}
+														</h3>
+														<p className="text-lg text-gray-600 leading-relaxed">
+															{
+																service.description
+															}
+														</p>
+													</div>
+													{/* <div className="w-full md:w-1/3 relative h-48 rounded-2xl overflow-hidden shrink-0">
+														<Image
+															src={service.image}
+															alt={service.category}
+															fill
+															className="object-cover"
+														/>
+													</div> */}
+												</div>
 
-									<div className="flex items-center justify-between">
-										<a
-											href="/contact"
-											className="text-sm font-medium inline-flex items-center gap-2"
-										>
-											Learn More{' '}
-											<ArrowRight className="w-4 h-4" />
-										</a>
-										<a
-											href="/request-quote"
-											className="bg-[#0070f3] text-white px-4 py-2 rounded-xl text-sm font-semibold shadow-sm hover:shadow-lg"
-										>
-											Request Quote
-										</a>
-									</div>
-								</div>
-							</motion.article>
-						))}
-					</div>
-				</div>
-			</section>
+												<div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-10">
+													{service.subServices.map(
+														(
+															sub,
+															idx,
+														) => (
+															<div
+																key={
+																	idx
+																}
+															>
+																<h4 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+																	<span className="w-2 h-2 rounded-full bg-[#FFD166]"></span>
+																	{
+																		sub.title
+																	}
+																</h4>
+																<ul className="space-y-3">
+																	{sub.items.map(
+																		(
+																			item,
+																			i,
+																		) => (
+																			<li
+																				key={
+																					i
+																				}
+																				className="flex items-start gap-3 text-gray-600"
+																			>
+																				<CheckCircle className="w-5 h-5 text-[#0070f3] mt-0.5 shrink-0" />
+																				<span className="text-base">
+																					{
+																						item
+																					}
+																				</span>
+																			</li>
+																		),
+																	)}
+																</ul>
+															</div>
+														),
+													)}
+												</div>
 
-			{/* Gallery */}
-			<section className="py-12 md:py-16 bg-white">
-				<div className="max-w-[85rem] mx-auto px-6">
-					<h3 className="text-2xl font-bold text-center mb-8">
-						Lab Gallery
-					</h3>
-					<div className="grid grid-cols-2 md:grid-cols-2 gap-4">
-						{[
-							'/images/equipment.jpeg',
-							'/images/contact.jpg',
-							// '/images/equipment2.png',
-							// '/images/equipment2.png',
-						].map((src, i) => (
-							<motion.div
-								key={i}
-								whileHover={{ scale: 1.03 }}
-								className="relative h-40 rounded-xl overflow-hidden shadow-sm"
-							>
-								<Image
-									src={src}
-									alt={`gallery-${i}`}
-									fill
-									className="object-cover"
-								/>
-							</motion.div>
-						))}
+												<div className="mt-12 pt-8 border-t border-gray-100 flex gap-4">
+													<a
+														href="/contact"
+														className="bg-[#772D3C] text-white px-8 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl hover:bg-[#602430] transition-all transform hover:-translate-y-0.5"
+													>
+														Request a Quote
+													</a>
+												</div>
+											</motion.div>
+										),
+								)}
+							</AnimatePresence>
+						</div>
 					</div>
 				</div>
 			</section>
 
 			{/* Testimonials + FAQ */}
-			<section className="py-12 md:py-20 bg-gray-50">
-				<div className="max-w-3xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-1 gap-8">
-					<div>
-						<h3 className="text-2xl font-bold mb-6">
-							Frequently asked questions
-						</h3>
-						<div className="space-y-4">
-							{faq.map((f, i) => (
-								<details
-									key={i}
-									className="bg-white rounded-2xl p-5 shadow-sm"
-								>
-									<summary className="cursor-pointer flex flex-row justify-between items-center list-none font-medium">
-										<p>{f.q}</p>
-										<FaChevronDown />
-									</summary>
-									<div className="mt-3 text-gray-600">
-										{f.a}
-									</div>
-								</details>
-							))}
-						</div>
+			<section className="py-16 md:py-24 bg-white">
+				<div className="max-w-4xl mx-auto px-6">
+					<h2 className="text-3xl font-bold text-center mb-12">
+						Common Questions
+					</h2>
+					<div className="space-y-4">
+						{faq.map((f, i) => (
+							<details
+								key={i}
+								className="group bg-gray-50 rounded-2xl p-6 hover:bg-white border border-transparent hover:border-gray-200 shadow-sm transition-all"
+							>
+								<summary className="cursor-pointer flex flex-row justify-between items-center list-none font-medium text-lg text-gray-800">
+									<span>{f.q}</span>
+									<FaChevronDown className="text-gray-400 group-open:rotate-180 transition-transform" />
+								</summary>
+								<div className="mt-4 text-gray-600 leading-relaxed">
+									{f.a}
+								</div>
+							</details>
+						))}
 					</div>
 				</div>
 			</section>
 
-			{/* CTA / Contact strip */}
-			<section
-				id="contact"
-				className="py-12 md:py-16 bg-[#072a17] text-white"
-			>
-				<div className="max-w-[85rem] mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
-					<div>
-						<h3 className="text-2xl font-bold">
-							Ready to elevate your lab?
-						</h3>
-						<p className="text-gray-200 mt-2">
-							Contact our team for quotes, training and
-							custom projects.
-						</p>
-					</div>
-					<div className="flex gap-3">
+			{/* CTA */}
+			<section className="py-20 bg-[#072a17] text-white overflow-hidden relative">
+				<div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 bg-white/5 rounded-full blur-3xl"></div>
+				<div className="absolute bottom-0 left-0 -ml-20 -mb-20 w-96 h-96 bg-[#FFD166]/10 rounded-full blur-3xl"></div>
+
+				<div className="max-w-[85rem] mx-auto px-6 relative z-10 text-center">
+					<h2 className="text-3xl md:text-5xl font-bold mb-6">
+						Ready to elevate your lab standards?
+					</h2>
+					<p className="text-xl text-gray-300 mb-10 max-w-2xl mx-auto">
+						Partner with Alpha Analytica for reliable results,
+						expert consultancy, and world-class equipment.
+					</p>
+					<div className="flex flex-col sm:flex-row gap-4 justify-center">
 						<a
 							href="/contact"
-							className="bg-[#FFD166] text-black px-6 py-3 rounded-full font-semibold"
+							className="bg-[#FFD166] text-[#0f1724] px-8 py-4 rounded-full font-bold text-lg hover:scale-105 transition-transform shadow-xl"
 						>
-							Contact Us
+							Get Started Today
 						</a>
-						{/* <a
-							href="tel:+2347034343002"
-							className="border border-white/20 px-5 py-3 rounded-full"
-						>
-							Call Sales
-						</a> */}
 					</div>
 				</div>
 			</section>
