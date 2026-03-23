@@ -23,13 +23,19 @@ export const metadata = {
 
 const sora = Sora({ subsets: ['latin'] });
 
+import SessionProvider from '../components/SessionProvider';
+import AnalyticsTracker from '@/components/AnalyticsTracker';
+
 export default function RootLayout({ children }) {
 	return (
 		<html lang="en">
 			<body className={sora.className}>
-				<Navbar />
-				<main>{children}</main>
-				<Footer />
+				<SessionProvider>
+					<AnalyticsTracker />
+					<Navbar />
+					<main>{children}</main>
+					<Footer />
+				</SessionProvider>
 			</body>
 		</html>
 	);

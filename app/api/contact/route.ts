@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import nodemailer from 'nodemailer'; // Keep this import, but we'll comment out its usage
+import nodemailer from 'nodemailer';
+import connectToDatabase from '@/lib/mongodb';
+import Enquiry from '@/models/Enquiry';
 
 export async function POST(req: NextRequest) {
 	try {
@@ -12,6 +14,15 @@ export async function POST(req: NextRequest) {
 				{ status: 400 },
 			);
 		}
+
+		// Save to database
+		await connectToDatabase();
+		await Enquiry.create({
+			name,
+			email,
+			subject,
+			message,
+		});
 
 		// --- NODEMAILER USAGE (UNCOMMENTED) ---
 		// Create a Nodemailer transporter.

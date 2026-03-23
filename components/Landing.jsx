@@ -4,7 +4,23 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { Star, ShieldCheck, Clock } from 'lucide-react';
 
-export default function Landing() {
+export default function Landing({ content }) {
+	const defaultContent = {
+		badge: 'ISO 17025 Compliant Laboratory',
+		title: 'Innovative Chemical Solutions for a Smarter, Sustainable Future.',
+		highlight: 'Smarter, Sustainable Future.',
+		description: 'At Alpha Analytica, we combine advanced analytical techniques with scientific expertise to deliver precise insights for industries, researchers, and manufacturers.',
+		ctaPrimary: 'Request Analysis',
+		ctaSecondary: 'Explore Services',
+		features: [
+			{ text: 'Accredited Results' },
+			{ text: 'Fast Turnaround' },
+			{ text: 'Expert Consultation' }
+		]
+	};
+
+	const data = content || defaultContent;
+
 	const container = {
 		hidden: { opacity: 0 },
 		visible: {
@@ -48,16 +64,16 @@ export default function Landing() {
 							<span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#29bd94] opacity-75"></span>
 							<span className="relative inline-flex rounded-full h-2 w-2 bg-[#195243]"></span>
 						</span>
-						ISO 17025 Compliant Laboratory
+						{data.badge}
 					</motion.div>
 
 					<motion.h1
 						variants={item}
 						className="md:text-[3.5rem] text-[2.5rem] w-full md:w-[80%] font-bold leading-[1.1] text-[#0E202A] -tracking-[0.03em]"
 					>
-						Innovative Chemical Solutions for a{' '}
+						{data.title.split(data.highlight)[0]}
 						<span className="text-[#dbb14c]">
-							Smarter, Sustainable Future.
+							{data.highlight}
 						</span>
 					</motion.h1>
 
@@ -65,10 +81,7 @@ export default function Landing() {
 						variants={item}
 						className="text-gray-500 md:w-[60%] w-full mt-6 text-xl leading-relaxed font-normal"
 					>
-						At Alpha Analytica, we combine advanced analytical
-						techniques with scientific expertise to deliver precise
-						insights for industries, researchers, and
-						manufacturers.
+						{data.description}
 					</motion.p>
 
 					<motion.div
@@ -79,13 +92,13 @@ export default function Landing() {
 							href="/contact"
 							className="px-8 py-4 rounded-full bg-[#772D3C] text-white font-semibold shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all"
 						>
-							Request Analysis
+							{data.ctaPrimary}
 						</a>
 						<a
 							href="/services"
 							className="px-8 py-4 rounded-full bg-white border border-gray-200 text-[#0E202A] font-semibold hover:bg-gray-50 transition-colors"
 						>
-							Explore Services
+							{data.ctaSecondary}
 						</a>
 					</motion.div>
 
@@ -95,15 +108,15 @@ export default function Landing() {
 					>
 						<div className="flex items-center gap-2">
 							<ShieldCheck className="w-5 h-5 text-[#29bd94]" />
-							Accredited Results
+							{data.features?.[0]?.text || 'Accredited Results'}
 						</div>
 						<div className="flex items-center gap-2">
 							<Clock className="w-5 h-5 text-[#29bd94]" />
-							Fast Turnaround
+							{data.features?.[1]?.text || 'Fast Turnaround'}
 						</div>
 						<div className="flex items-center gap-2">
 							<Star className="w-5 h-5 text-[#29bd94]" />
-							Expert Consultation
+							{data.features?.[2]?.text || 'Expert Consultation'}
 						</div>
 					</motion.div>
 				</div>

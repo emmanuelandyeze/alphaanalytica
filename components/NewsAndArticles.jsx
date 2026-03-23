@@ -3,8 +3,8 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import blogPosts from '../blog';
 
-const NewsAndArticles = () => {
-	const articles = blogPosts;
+const NewsAndArticles = ({ articles }) => {
+	const data = articles || blogPosts.slice(0, 3);
 	const router = useRouter();
 
 	return (
@@ -15,18 +15,18 @@ const NewsAndArticles = () => {
 				</h2>
 			</div>
 			<div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-				{articles?.map((article) => (
+				{data?.map((article) => (
 					<div
 						key={article.slug}
-						className="bg-white rounded-lg hover:shadow-sm hover:underline underline-offset-2 cursor-pointer overflow-hidden"
+						className="bg-white rounded-lg hover:shadow-sm hover:underline underline-offset-2 cursor-pointer overflow-hidden group"
 					>
 						{/* Article Image */}
-						<div className="relative h-[16rem] w-full">
+						<div className="relative h-[16rem] w-full" onClick={() => router.push(`/blog/${article.slug}`)}>
 							<Image
 								src={article.image}
 								alt={article.title}
-								layout="fill"
-								objectFit="cover"
+								fill
+								style={{ objectFit: 'cover' }}
 								className="object-cover rounded-3xl"
 							/>
 						</div>
@@ -40,7 +40,7 @@ const NewsAndArticles = () => {
 							<span className="text-xs no-underline bg-[#8A7FA2] text-[#f1f1f1] px-4 py-1 rounded-full font-medium">
 								{article.category}
 							</span>
-							<h3 className="text-xl hover:underline font-semibold mt-2 mb-4">
+							<h3 className="text-xl font-semibold mt-2 mb-4 group-hover:underline">
 								{article.title}
 							</h3>
 							<div className="text-gray-500 text-sm">
