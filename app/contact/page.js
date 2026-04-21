@@ -82,7 +82,7 @@ export default function Contact() {
 			// Set the error message to display to the user
 			setErrorMessage(
 				error.message ||
-					'Something went wrong. Please try again.',
+				'Something went wrong. Please try again.',
 			);
 		} finally {
 			setIsSubmitting(false); // Always reset submitting state once the fetch request is complete
@@ -269,6 +269,12 @@ export default function Contact() {
 									54 Sam Shonibare street, <br />
 									Surulere, Lagos. <br />
 									Nigeria
+								</p>
+								<br />
+								<p className="text-gray-600">
+									193A Bramley Road, <br /> London
+									N14 4XB <br />
+									United Kingdom
 								</p>
 							</div>
 						</div>
