@@ -11,6 +11,9 @@ const SiteVisitSchema = new mongoose.Schema({
   userAgent: {
     type: String,
   },
+  ip: {
+    type: String,
+  },
   timestamp: {
     type: Date,
     default: Date.now,

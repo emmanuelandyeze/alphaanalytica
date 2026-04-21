@@ -25,6 +25,7 @@ const sora = Sora({ subsets: ['latin'] });
 
 import SessionProvider from '../components/SessionProvider';
 import AnalyticsTracker from '@/components/AnalyticsTracker';
+import ConditionalLayout from '@/components/ConditionalLayout';
 
 export default function RootLayout({ children }) {
 	return (
@@ -32,9 +33,7 @@ export default function RootLayout({ children }) {
 			<body className={sora.className}>
 				<SessionProvider>
 					<AnalyticsTracker />
-					<Navbar />
-					<main>{children}</main>
-					<Footer />
+					<ConditionalLayout>{children}</ConditionalLayout>
 				</SessionProvider>
 			</body>
 		</html>

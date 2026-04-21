@@ -8,6 +8,11 @@ const AnalyticsTracker = () => {
   const trackedPath = useRef(null);
 
   useEffect(() => {
+    // Do not track localhost or admin routes
+    if (window.location.hostname === 'localhost' || pathname.startsWith('/admin')) {
+      return;
+    }
+
     // Only track if the path has changed to avoid duplicate tracking on re-renders
     if (trackedPath.current !== pathname) {
       const trackVisit = async () => {

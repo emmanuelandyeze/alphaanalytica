@@ -13,14 +13,27 @@ import {
   LogOut, 
   Menu, 
   X,
-  Globe
+  Globe,
+  BarChart3
 } from 'lucide-react';
 
 export default function AdminLayout({ children }) {
   const { data: session, status } = useSession();
   const router = useRouter();
   const pathname = usePathname();
-  const [isSidebarOpen, setIsSidebarOpen] = React.useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = React.useState(false); // Default to closed for mobile
+
+  // Close sidebar when clicking outside on mobile
+  const sidebarRef = React.useRef(null);
+  React.useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (isSidebarOpen && sidebarRef.current && !sidebarRef.current.contains(event.target) && window.innerWidth < 1024) {
+        setIsSidebarOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [isSidebarOpen]);
 
   // Don't show sidebar on login page
   if (pathname === '/admin/login') {
@@ -42,19 +55,44 @@ export default function AdminLayout({ children }) {
 
   const navItems = [
     { name: 'Dashboard', icon: <LayoutDashboard size={20} />, href: '/admin/dashboard' },
+    { name: 'Analytics', icon: <BarChart3 size={20} />, href: '/admin/analytics' },
     { name: 'Blogs', icon: <FileText size={20} />, href: '/admin/blogs' },
     { name: 'Site Content', icon: <Settings size={20} />, href: '/admin/content' },
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 flex text-gray-800 font-sans">
+    <div className="min-h-screen bg-gray-50 flex flex-col lg:flex-row text-gray-800 font-sans relative">
+      {/* Mobile Header */}
+      <div className="lg:hidden bg-white border-b border-gray-200 px-4 py-4 flex items-center justify-between sticky top-0 z-50">
+        <span className="text-xl font-bold text-[#772D3C]">Admin Panel</span>
+        <button 
+          onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+          className="p-2 rounded-xl bg-gray-50 hover:bg-gray-100 text-[#772D3C]"
+        >
+          {isSidebarOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
+      </div>
+
+      {/* Sidebar Overlay (Mobile) */}
+      {isSidebarOpen && (
+        <div className="lg:hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-40 transition-opacity" />
+      )}
+
       {/* Sidebar */}
-      <aside className={`bg-white border-r border-gray-200 transition-all duration-300 ${isSidebarOpen ? 'w-64' : 'w-20'} flex flex-col`}>
-        <div className="p-6 flex items-center justify-between">
-          {isSidebarOpen && (
+      <aside 
+        ref={sidebarRef}
+        className={`
+          fixed inset-y-0 left-0 z-50 bg-white border-r border-gray-200 transition-all duration-300 transform
+          ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+          ${isSidebarOpen ? 'w-64' : 'lg:w-20'}
+          flex flex-col lg:sticky lg:h-screen
+        `}
+      >
+        <div className="p-6 hidden lg:flex items-center justify-between">
+          {(isSidebarOpen || window.innerWidth < 1024) && (
             <span className="text-xl font-bold text-[#772D3C]">Admin Panel</span>
           )}
-          <button onClick={() => setIsSidebarOpen(!isSidebarOpen)} className="p-2 rounded-lg hover:bg-gray-100">
+          <button onClick={() => setIsSidebarOpen(!isSidebarOpen)} className="p-2 rounded-lg hover:bg-gray-100 hidden lg:block">
             {isSidebarOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
         </div>
@@ -64,6 +102,9 @@ export default function AdminLayout({ children }) {
             <Link
               key={item.name}
               href={item.href}
+              onClick={() => {
+                if (window.innerWidth < 1024) setIsSidebarOpen(false);
+              }}
               className={`flex items-center gap-4 px-4 py-3 rounded-xl transition-all ${
                 pathname === item.href 
                   ? 'bg-[#772D3C] text-white shadow-md' 
@@ -71,7 +112,7 @@ export default function AdminLayout({ children }) {
               }`}
             >
               {item.icon}
-              {isSidebarOpen && <span className="font-medium">{item.name}</span>}
+              {(isSidebarOpen || window.innerWidth < 1024) && <span className="font-medium">{item.name}</span>}
             </Link>
           ))}
         </nav>
@@ -82,38 +123,38 @@ export default function AdminLayout({ children }) {
             className="flex items-center gap-4 px-4 py-3 text-gray-600 hover:bg-gray-100 rounded-xl transition-all"
           >
             <Globe size={20} />
-            {isSidebarOpen && <span className="font-medium">View Website</span>}
+            {(isSidebarOpen || window.innerWidth < 1024) && <span className="font-medium">View Website</span>}
           </Link>
           <button
             onClick={() => signOut({ callbackUrl: '/admin/login' })}
             className="w-full flex items-center gap-4 px-4 py-3 text-red-600 hover:bg-red-50 rounded-xl transition-all mt-2"
           >
             <LogOut size={20} />
-            {isSidebarOpen && <span className="font-medium">Logout</span>}
+            {(isSidebarOpen || window.innerWidth < 1024) && <span className="font-medium">Logout</span>}
           </button>
         </div>
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 overflow-auto p-8">
-        <header className="mb-10 flex justify-between items-center">
+      <main className="flex-1 min-w-0 p-4 lg:p-8">
+        <header className="mb-6 lg:mb-10 flex flex-col md:flex-row md:justify-between md:items-center gap-4">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 tracking-tight">
+            <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 tracking-tight">
               {navItems.find(i => i.href === pathname)?.name || 'Admin'}
             </h1>
-            <p className="text-gray-500 mt-1">Manage your website content and blogs.</p>
+            <p className="text-gray-500 text-sm mt-1">Manage your website content and blogs.</p>
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 self-end md:self-auto">
             <div className="bg-white px-4 py-2 rounded-xl border border-gray-200 shadow-sm flex items-center gap-3">
               <div className="w-8 h-8 rounded-full bg-[#772D3C]/10 flex items-center justify-center text-[#772D3C] font-bold">
                 {session?.user?.name?.[0] || 'A'}
               </div>
-              <span className="font-medium">{session?.user?.name}</span>
+              <span className="font-medium text-sm lg:text-base">{session?.user?.name}</span>
             </div>
           </div>
         </header>
 
-        <div className="bg-white rounded-3xl p-8 shadow-sm border border-gray-100 min-h-[calc(100vh-200px)]">
+        <div className="bg-white rounded-2xl lg:rounded-3xl p-4 lg:p-8 shadow-sm border border-gray-100 min-h-[calc(100vh-200px)]">
           {children}
         </div>
       </main>

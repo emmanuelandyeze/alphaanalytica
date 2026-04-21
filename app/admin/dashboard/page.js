@@ -26,14 +26,31 @@ export default async function DashboardPage() {
   const visitCount = await SiteVisit.countDocuments();
   const enquiryCount = await Enquiry.countDocuments();
 
+  // Calculate Site Visits Change (Last 30 days vs Previous 30 days)
+  const thirtyDaysAgo = new Date();
+  thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+  const sixtyDaysAgo = new Date();
+  sixtyDaysAgo.setDate(sixtyDaysAgo.getDate() - 60);
+
+  const last30DaysVisits = await SiteVisit.countDocuments({ timestamp: { $gte: thirtyDaysAgo } });
+  const prev30DaysVisits = await SiteVisit.countDocuments({ timestamp: { $gte: sixtyDaysAgo, $lt: thirtyDaysAgo } });
+  
+  let visitChange = 0;
+  if (prev30DaysVisits > 0) {
+    visitChange = Math.round(((last30DaysVisits - prev30DaysVisits) / prev30DaysVisits) * 100);
+  } else if (last30DaysVisits > 0) {
+    visitChange = 100;
+  }
+
   const stats = [
-    { name: 'Total Blogs', value: blogCount, icon: <FileText className="text-blue-600" />, change: '+12%', changeType: 'increase' },
+    { name: 'Total Blogs', value: blogCount, icon: <FileText className="text-blue-600" />, change: '+12%', changeType: 'increase' }, // Still hardcoded for now or fetch similar
     { name: 'Admins', value: adminCount, icon: <Users className="text-purple-600" />, change: '0%', changeType: 'neutral' },
-    { name: 'Site Visits', value: visitCount.toLocaleString(), icon: <TrendingUp className="text-green-600" />, change: '+18%', changeType: 'increase' },
+    { name: 'Site Visits', value: visitCount.toLocaleString(), icon: <TrendingUp className="text-green-600" />, change: `${visitChange >= 0 ? '+' : ''}${visitChange}%`, changeType: visitChange >= 0 ? (visitChange > 0 ? 'increase' : 'neutral') : 'decrease' },
     { name: 'Enquiries', value: enquiryCount.toLocaleString(), icon: <MessageSquare className="text-orange-600" />, change: '+5%', changeType: 'increase' },
   ];
 
   const recentBlogs = await Blog.find().sort({ createdAt: -1 }).limit(5);
+  const recentVisits = await SiteVisit.find().sort({ timestamp: -1 }).limit(5);
 
   return (
     <div className="space-y-10">
@@ -46,7 +63,9 @@ export default async function DashboardPage() {
                 {stat.icon}
               </div>
               <span className={`text-xs font-bold px-2 py-1 rounded-full ${
-                stat.changeType === 'increase' ? 'bg-green-50 text-green-600' : 'bg-gray-50 text-gray-600'
+                stat.changeType === 'increase' ? 'bg-green-50 text-green-600' : 
+                stat.changeType === 'decrease' ? 'bg-red-50 text-red-600' : 
+                'bg-gray-50 text-gray-600'
               }`}>
                 {stat.change}
               </span>
@@ -91,6 +110,52 @@ export default async function DashboardPage() {
           </div>
         </div>
 
+        {/* Recently Visited Pages */}
+        <div className="space-y-6">
+          <div className="flex items-center justify-between">
+            <h2 className="text-xl font-bold text-gray-900">Recent Site Activity</h2>
+            <Link href="/admin/analytics" className="text-sm font-semibold text-[#772D3C] hover:underline flex items-center gap-1">
+              View Logs <ArrowUpRight size={14} />
+            </Link>
+          </div>
+          <div className="bg-gray-50 rounded-2xl border border-gray-100 overflow-x-auto">
+            <table className="w-full text-left text-sm min-w-[500px] lg:min-w-0">
+              <thead className="bg-gray-100/50 text-gray-500 font-bold">
+                <tr>
+                  <th className="px-4 py-3">Time</th>
+                  <th className="px-4 py-3">Page</th>
+                  <th className="px-4 py-3">From</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-200/50">
+                {recentVisits.length > 0 ? recentVisits.map((visit) => (
+                  <tr key={visit._id} className="hover:bg-white/50 transition-colors">
+                    <td className="px-4 py-3 text-gray-500 whitespace-nowrap">
+                      {new Date(visit.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    </td>
+                    <td className="px-4 py-3">
+                      <span className="font-medium text-gray-900 truncate block max-w-[150px]" title={visit.path}>
+                        {visit.path}
+                      </span>
+                    </td>
+                    <td className="px-4 py-3 text-xs text-gray-400 italic">
+                      {visit.referrer ? visit.referrer.split('/')[2] : 'Direct'}
+                    </td>
+                  </tr>
+                )) : (
+                  <tr>
+                    <td colSpan="3" className="px-4 py-10 text-center text-gray-400 italic">
+                      No visits recorded yet.
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+          
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mt-10">
         {/* Quick Actions */}
         <div className="space-y-6">
           <h2 className="text-xl font-bold text-gray-900">Quick Actions</h2>
@@ -104,13 +169,18 @@ export default async function DashboardPage() {
               <span className="font-bold text-lg">Edit Home Content</span>
             </Link>
           </div>
-          
-          <div className="bg-[#772D3C]/5 border border-[#772D3C]/10 p-6 rounded-3xl">
+        </div>
+
+        {/* System Status Section */}
+        <div className="space-y-6">
+          <h2 className="text-xl font-bold text-gray-900">System</h2>
+          <div className="bg-[#772D3C]/5 border border-[#772D3C]/10 p-6 rounded-3xl h-full">
             <h4 className="font-bold text-[#772D3C] mb-2 flex items-center gap-2">
               <AlertCircle size={18} /> System Status
             </h4>
             <p className="text-sm text-gray-600 leading-relaxed">
-              Your website is currently connected to MongoDB Atlas. Cloudinary image hosting is active. 5 new enquiries pending review.
+              Website is connected to MongoDB. Tracking {visitCount.toLocaleString()} total visits. {enquiryCount} enquiries received. 
+              {last30DaysVisits} visits in the last 30 days.
             </p>
           </div>
         </div>
